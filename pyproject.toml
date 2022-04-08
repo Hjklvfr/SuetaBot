@@ -7,6 +7,7 @@ authors = ["Roman Grigoryev <hjklvfr@list.ru>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 pyTelegramBotAPI = "^4.4.0"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 
