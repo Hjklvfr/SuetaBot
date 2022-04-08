@@ -1,3 +1,4 @@
+import random
 from typing import Dict
 
 import requests
@@ -13,16 +14,29 @@ DICTIONARY: Dict[str, str] = {
     "привет": "Ну, здравствуй"
 }
 
+CAT_ANIMATION = "https://cataas.com/cat/gif"
+CAT_PHOTO = "https://cataas.com/cat"
+
 
 @bot.message_handler(commands=["start"])
 def send_welcome(message: Message):
     bot.send_message(message.chat.id, DICTIONARY["привет"])
 
 
+def send_cat_photo(chat_id: int):
+    response = requests.get(CAT_PHOTO, stream=True)
+    bot.send_photo(chat_id, response.content)
+
+
+def send_cat_gif(chat_id: int):
+    response = requests.get(CAT_ANIMATION, stream=True)
+    bot.send_video(chat_id, response.content)
+
+
 @bot.message_handler(commands=["cat"])
 def send_cat(message: Message):
-    response = requests.get("https://cataas.com/cat", stream=True)
-    bot.send_photo(message.chat.id, response.content)
+    method = random.choice([send_cat_photo, send_cat_gif])
+    method(message.chat.id)
 
 
 def is_message_from_dictionary(message: Message):
